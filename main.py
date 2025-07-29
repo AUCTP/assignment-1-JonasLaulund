@@ -77,8 +77,8 @@ def costs (initial_inventory, inventories, prices):
     item_costs = []
     for price in prices:
         item_costs.append(price / 2)            # Calculating the item cost by dividing each of them in half
-    disposal_costs = inventories[0] * item_costs[0] + inventories[1] * item_costs[1] + inventories[2] * item_costs[2] # Calculating the costs by multiplying the the end inventory with the item costs
-    production_costs = initial_inventory[0] * item_costs[0] + initial_inventory[1] * item_costs[1] + initial_inventory[2] * item_costs[2] # Calculating the costs by multiplying the the end inventory with the item costs
+    disposal_costs = inventories[0] * item_costs[0] + inventories[1] * item_costs[1] + inventories[2] * item_costs[2] # Calculating the disposal costs by multiplying the the end inventory with the item costs
+    production_costs = initial_inventory[0] * item_costs[0] + initial_inventory[1] * item_costs[1] + initial_inventory[2] * item_costs[2] # Calculating the production costs by multiplying the the start inventory with the item costs
     return disposal_costs, production_costs
 
 customer_numbers = simulate_customers(inventories)
