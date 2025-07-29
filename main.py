@@ -1,4 +1,4 @@
-# Code made by Jonas Skjold Laulund
+# Code made by Jonas Skjold Laulund 
 import random
 
 # 1. Initialize Inventory
