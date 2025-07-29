@@ -4,6 +4,7 @@ import random
 items = ["Sandwich", "Salad", "Cake"]
 prices = [65, 45, 50]
 inventories = [100, 50, 100]
+co_inventories = [100, 50, 100]
 
 
 # 2. Simulate Customer Arrivals
@@ -40,7 +41,7 @@ def process_sales (sales_list, sales, prices):
     return revenue, revenue1
 
 # 4. Generate Sales Report
-def sales_report (items, sales, missed_sales, not_buying, num_of_stud, inventories, revenue, costs):
+def sales_report (items, sales, missed_sales, not_buying, num_of_stud, inventories, revenue, disposal_cost, production_cost):
     print(f"""
     Out of {num_of_stud} student arriving today the following happened:      
 
@@ -56,9 +57,11 @@ def sales_report (items, sales, missed_sales, not_buying, num_of_stud, inventori
       {items[1]}: {inventories[1]}
       {items[2]}: {inventories[2]}
     
-    The end inventory is leading to {costs} DKK in costs
+    The end inventory is leading to {disposal_cost} DKK in disposal cost
 
-    The the total profit is {revenue - costs} DKK
+    The production cost is {production_cost} DKK
+
+    The the total profit is {revenue - production_cost - disposal_cost} DKK
 
     There have been the following in missed sales due to missing inventory:
       {items[0]}: {missed_sales[0]}
@@ -69,17 +72,19 @@ def sales_report (items, sales, missed_sales, not_buying, num_of_stud, inventori
     """)
 
 # 5. Calculate costs
-def costs (inventories, prices):
+def costs (initial_inventory, inventories, prices):
     item_costs = []
     for price in prices:
         item_costs.append(price / 2)            # Calculating the item cost by dividing each of them in half
-    costs = inventories[0] * item_costs[0] + inventories[1] * item_costs[1] + inventories[2] * item_costs[2] # Calculating the costs by multiplying the the end inventory with the item costs
-    return costs
+    disposal_costs = inventories[0] * item_costs[0] + inventories[1] * item_costs[1] + inventories[2] * item_costs[2] # Calculating the costs by multiplying the the end inventory with the item costs
+    production_costs = initial_inventory[0] * item_costs[0] + initial_inventory[1] * item_costs[1] + initial_inventory[2] * item_costs[2] # Calculating the costs by multiplying the the end inventory with the item costs
+    return disposal_costs, production_costs
 
 customer_numbers = simulate_customers(inventories)
 revenue = process_sales(customer_numbers[0], customer_numbers[1], prices)
-costs = costs(customer_numbers[5], prices)
-sales_report(items, customer_numbers[1], customer_numbers[2], customer_numbers[3], customer_numbers[4], customer_numbers[5], revenue[1], costs)
+costs = costs(co_inventories, customer_numbers[5], prices)
+sales_report(items, customer_numbers[1], customer_numbers[2], customer_numbers[3], customer_numbers[4], customer_numbers[5], revenue[1], costs[0], costs[1])
 
 # 6. Optimal inventory levels
 # One can use the simulations above to test different levels of inventory through many simulation to find what inventory level is the best. 
+# It can also be done more theoretical with a newsvendor problem approach
